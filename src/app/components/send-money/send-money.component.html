@@ -1,0 +1,82 @@
+<div class="send-money-form">
+  <h2>📤 Send Money to Another User</h2>
+
+  @if (successMessage()) {
+    <div class="success-message">{{ successMessage() }}</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-message">{{ errorMessage() }}</div>
+  }
+
+  <form (ngSubmit)="sendMoney()">
+    <div class="form-group">
+      <label>Receiver Email</label>
+      <input
+        type="email"
+        [(ngModel)]="receiverEmail"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        name="receiverEmail"
+        placeholder="Enter recipient's email"
+        [disabled]="isLoading()"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Amount</label>
+      <div class="input-group">
+        <span class="currency">USD</span>
+        <input
+          type="number"
+          [(ngModel)]="amount"
+          [ngModelOptions]="{ updateOn: 'blur' }"
+          name="amount"
+          placeholder="Enter amount"
+          step="0.01"
+          min="0"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description (Optional)</label>
+      <input
+        type="text"
+        [(ngModel)]="description"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        name="description"
+        placeholder="e.g., Loan repayment, Dinner split"
+        [disabled]="isLoading()"
+      />
+    </div>
+
+    <button type="submit" [disabled]="isLoading()" class="btn-submit">
+      {{ isLoading() ? 'Processing...' : 'Send Money' }}
+    </button>
+  </form>
+
+  <div class="info-box">
+    <h4>🔒 Secure Transfer</h4>
+    <ul>
+      <li>All transactions are encrypted and secure</li>
+      <li>Both sender and receiver are recorded</li>
+      <li>Transfers are instantaneous and irreversible</li>
+      <li>Your balance must be sufficient for the transfer</li>
+      <li>The receiver must have an active wallet</li>
+    </ul>
+  </div>
+
+  <div class="features-box">
+    <h4>✨ ACID Compliance</h4>
+    <p>
+      Our system uses database transactions to ensure all transfers are
+      <strong>Atomic</strong> (all or nothing), <strong>Consistent</strong>
+      (balances are always valid), <strong>Isolated</strong> (concurrent transfers
+      don't interfere), and <strong>Durable</strong> (once committed, permanently
+      stored).
+    </p>
+  </div>
+</div>

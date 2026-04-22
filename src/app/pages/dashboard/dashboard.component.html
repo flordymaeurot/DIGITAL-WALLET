@@ -1,0 +1,90 @@
+<div class="dashboard-container">
+  <nav class="navbar">
+    <div class="navbar-content">
+      <h1 class="logo">💰 Digital Wallet</h1>
+      <div class="user-info">
+        <span class="username">{{ currentUser()?.username }}</span>
+        <button (click)="logout()" class="btn-logout">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-content">
+    <div class="sidebar">
+      <div class="menu">
+        <button
+          [class.active]="activeTab() === 'overview'"
+          (click)="setActiveTab('overview')"
+          class="menu-item"
+        >
+          📊 Overview
+        </button>
+        <button
+          [class.active]="activeTab() === 'cash-in'"
+          (click)="setActiveTab('cash-in')"
+          class="menu-item"
+        >
+          💵 Cash In
+        </button>
+        <button
+          [class.active]="activeTab() === 'send'"
+          (click)="setActiveTab('send')"
+          class="menu-item"
+        >
+          📤 Send Money
+        </button>
+        <button
+          [class.active]="activeTab() === 'history'"
+          (click)="setActiveTab('history')"
+          class="menu-item"
+        >
+          📋 History
+        </button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      @if (activeTab() === 'overview') {
+        <div class="overview-section">
+          <div class="balance-card">
+            @if (isLoading()) {
+              <p class="loading">Loading wallet...</p>
+            } @else {
+              <div class="balance-content">
+                <h2>Current Balance</h2>
+                <div class="balance-amount">
+                  {{ currency() }} {{ balance().toFixed(2) }}
+                </div>
+                <p class="balance-label">Available Balance</p>
+              </div>
+            }
+          </div>
+
+          <div class="quick-actions">
+            <button (click)="setActiveTab('cash-in')" class="action-btn cash-in">
+              💵 Cash In
+            </button>
+            <button (click)="setActiveTab('send')" class="action-btn send">
+              📤 Send Money
+            </button>
+            <button (click)="setActiveTab('history')" class="action-btn history">
+              📋 View History
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (activeTab() === 'cash-in') {
+        <app-cash-in (transactionSuccess)="onTransactionSuccess()"></app-cash-in>
+      }
+
+      @if (activeTab() === 'send') {
+        <app-send-money (transactionSuccess)="onTransactionSuccess()"></app-send-money>
+      }
+
+      @if (activeTab() === 'history') {
+        <app-transaction-history></app-transaction-history>
+      }
+    </div>
+  </div>
+</div>

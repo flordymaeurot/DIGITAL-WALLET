@@ -1,0 +1,62 @@
+<div class="transaction-history">
+  <h2>📋 Transaction History</h2>
+
+  @if (errorMessage()) {
+    <div class="error-message">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <p class="loading">Loading transactions...</p>
+  } @else {
+    @if (transactions().length === 0) {
+      <div class="empty-state">
+        <p>No transactions yet. Start by adding money or sending a transfer!</p>
+      </div>
+    } @else {
+      <div class="transactions-table">
+        <div class="table-header">
+          <div class="col-type">Type</div>
+          <div class="col-description">Description</div>
+          <div class="col-amount">Amount</div>
+          <div class="col-date">Date</div>
+        </div>
+
+        @for (transaction of transactions(); track transaction.id) {
+          <div
+            class="table-row"
+            [ngClass]="'type-' + getTransactionColor(transaction.type)"
+          >
+            <div class="col-type">
+              <span class="icon">{{ getTransactionIcon(transaction.type) }}</span>
+              <span class="type-name">{{ transaction.type }}</span>
+            </div>
+            <div class="col-description">{{ transaction.description }}</div>
+            <div class="col-amount" [ngClass]="getTransactionColor(transaction.type)">
+              {{ transaction.type === 'RECEIVE' || transaction.type === 'CASH_IN' ? '+' : '-' }}
+              {{ transaction.amount.toFixed(2) }}
+            </div>
+            <div class="col-date">{{ formatDate(transaction.createdAt) }}</div>
+          </div>
+        }
+      </div>
+
+      <div class="pagination">
+        <button
+          (click)="previousPage()"
+          [disabled]="currentPage() === 1"
+          class="btn-pagination"
+        >
+          ← Previous
+        </button>
+        <span class="page-info">Page {{ currentPage() }} of {{ totalPages() }}</span>
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+          class="btn-pagination"
+        >
+          Next →
+        </button>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,57 @@
+<div class="cash-in-form">
+  <h2>💵 Add Money to Wallet</h2>
+
+  @if (successMessage()) {
+    <div class="success-message">{{ successMessage() }}</div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-message">{{ errorMessage() }}</div>
+  }
+
+  <form (ngSubmit)="cashIn()">
+    <div class="form-group">
+      <label>Amount</label>
+      <div class="input-group">
+        <span class="currency">USD</span>
+        <input
+          type="number"
+          [(ngModel)]="amount"
+          [ngModelOptions]="{ updateOn: 'blur' }"
+          name="amount"
+          placeholder="Enter amount"
+          step="0.01"
+          min="0"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description (Optional)</label>
+      <input
+        type="text"
+        [(ngModel)]="description"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        name="description"
+        placeholder="e.g., Salary, Bonus"
+        [disabled]="isLoading()"
+      />
+    </div>
+
+    <button type="submit" [disabled]="isLoading()" class="btn-submit">
+      {{ isLoading() ? 'Processing...' : 'Add Money' }}
+    </button>
+  </form>
+
+  <div class="info-box">
+    <h4>ℹ️ How it works</h4>
+    <ul>
+      <li>Enter the amount you want to add to your wallet</li>
+      <li>Click "Add Money" to process the transaction</li>
+      <li>Your balance will be updated immediately</li>
+      <li>A record of this transaction will appear in your history</li>
+    </ul>
+  </div>
+</div>
